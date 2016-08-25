@@ -1,6 +1,5 @@
 /target/
 /FitNesseRoot/
-/.settings/
-/.classpath/
+.*
 
 
