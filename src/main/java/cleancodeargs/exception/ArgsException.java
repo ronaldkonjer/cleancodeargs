@@ -1,21 +1,16 @@
 package cleancodeargs.exception;
 
-import cleancodeargs.exception.ArgsException.ErrorCode;
+import static cleancodeargs.exception.ArgsException.ErrorCode.*;
 
 public class ArgsException extends Exception {
 	private char errorArgumentId = '\0';
-	private String errorParameter = "TILT";
-	private ErrorCode errorCode = ErrorCode.OK;
+	private String errorParameter = null;
+	private ErrorCode errorCode = OK;
 	
 	public enum ErrorCode {
-		OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, UNEXPECTED_ARGUMENT, MISSING_DOUBLE, INVALID_DOUBLE, INVALID_ARGUMENT_NAME, INVALID_FORMAT
+		OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, UNEXPECTED_ARGUMENT, MISSING_DOUBLE, INVALID_DOUBLE, INVALID_ARGUMENT_NAME, INVALID_ARGUMENT_FORMAT
 	}
-
-	
-	public ArgsException() {
 		
-	}
-	
 	public ArgsException(String message) {
 		super(message);
 	}
@@ -63,7 +58,7 @@ public class ArgsException extends Exception {
 	public String errorMessage() throws Exception {
 		switch (errorCode) {
 			case OK:
-				throw new Exception("TILT: Should not get here.");
+				return "TILT: Should not get here.";
 			case UNEXPECTED_ARGUMENT:
 				return String.format("Argument -%c unexpected.", errorArgumentId);
 			case MISSING_STRING:
@@ -76,6 +71,10 @@ public class ArgsException extends Exception {
 				return String.format("Argument -%c expects a double but was '%s'.",  errorArgumentId, errorParameter);
 			case MISSING_DOUBLE:
 				return String.format("Could not find double parameter for -%c.", errorArgumentId);
+			case INVALID_ARGUMENT_NAME:
+				return String.format("'%c' is not a valid argument name.", errorArgumentId);
+			case INVALID_ARGUMENT_FORMAT:
+				return String.format("'%s' is not a valid argument format.", errorParameter);
 		}
 		return "";
 	}
